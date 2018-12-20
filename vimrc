@@ -1,14 +1,3 @@
-" Yann Esposito
-" http://yannesposito.com
-" @yogsototh
-"
-" ---------- VERY IMPORTANT -----------
-" To install plugin the first time:
-" > vim +PlugInstall +qall
-" cd ~/.vim/bundle/vimproc.vim && make
-" cabal install ghc-mod
-" -------------------------------------
-
 call plug#begin('~/.vim/plugged')
 
 " Distraction Free Writting
@@ -37,21 +26,10 @@ Plug 'airblade/vim-gitgutter'
 " Align code
 Plug 'junegunn/vim-easy-align'
 Plug 'scrooloose/syntastic'             " syntax checker
-" --- Haskell
-Plug 'yogsototh/haskell-vim'            " syntax indentation / highlight
-" Plug 'enomsg/vim-haskellConcealPlus'    " unicode for haskell operators
-" Plug 'eagletmt/ghcmod-vim'
-" Plug 'eagletmt/neco-ghc'
-" Plug 'Twinside/vim-hoogle'
 Plug 'pbrisbin/html-template-syntax'    " Yesod templates
 " --- XML
 Plug 'othree/xml.vim'
-" " -- Clojure
-Plug 'kien/rainbow_parentheses.vim'
-Plug 'guns/vim-clojure-static'
-Plug 'guns/vim-sexp'
-Plug 'tpope/vim-repeat'
-" " Plug 'paredit.vim'
+ " Plug 'paredit.vim'
 Plug 'tpope/vim-fireplace'
 " " <<< vim-fireplace dependencie
 " Plug 'tpope/vim-classpath'
@@ -80,38 +58,6 @@ set nocompatible
 " ### Plugin conf ###
 " ###################
 
-" -------------------
-"       Haskell
-" -------------------
-let mapleader="-"
-let g:mapleader="-"
-set tm=2000
-" nmap <silent> <leader>ht :GhcModType<CR>
-" nmap <silent> <leader>hh :GhcModTypeClear<CR>
-" nmap <silent> <leader>hT :GhcModTypeInsert<CR>
-" nmap <silent> <leader>hc :SyntasticCheck ghc_mod<CR>:lopen<CR>
-" let g:syntastic_mode_map={'mode': 'active', 'passive_filetypes': ['haskell']}
-" let g:syntastic_always_populate_loc_list = 1
-" nmap <silent> <leader>hl :SyntasticCheck hlint<CR>:lopen<CR>
-
-" Auto-checking on writing
-" autocmd BufWritePost *.hs,*.lhs GhcModCheckAndLintAsync
-
-"  neocomplcache (advanced completion)
-" autocmd BufEnter *.hs,*.lhs let g:neocomplcache_enable_at_startup = 1
-" function! SetToCabalBuild()
-"     if glob("*.cabal") != ''
-"         set makeprg=cabal\ build
-"     endif
-" endfunction
-" autocmd BufEnter *.hs,*.lhs :call SetToCabalBuild()
-
-" -- neco-ghc
-let $PATH=$PATH.':'.expand("~/.cabal/bin")
-
-" -- Frege
-autocmd BufEnter *.fr :filetype haskell
-
 " ----------------
 "       GIT
 " ----------------
@@ -129,7 +75,7 @@ nmap gN <Plug>GitGutterPrevHunk
 " -- solarized theme
 set background=dark
 try
-    colorscheme solarized
+    colorscheme evening
 catch
 endtry
 
@@ -151,37 +97,6 @@ nnoremap <space>b :vsplit<cr> :<C-u>Unite buffer<cr>
 nnoremap <space>y :vsplit<cr>:<C-u>Unite history/yank<cr>
 " reset not it is <C-l> normally
 :nnoremap <space>r <Plug>(unite_restart)
-
-" ------------------
-"       Clojure
-" ------------------
-autocmd BufEnter *.cljs,*.clj,*.cljs.hl RainbowParenthesesActivate
-autocmd BufEnter *.cljs,*.clj,*.cljs.hl RainbowParenthesesLoadRound
-autocmd BufEnter *.cljs,*.clj,*.cljs.hl RainbowParenthesesLoadSquare
-autocmd BufEnter *.cljs,*.clj,*.cljs.hl RainbowParenthesesLoadBraces
-" Fix I don't know why
-autocmd BufEnter *.cljs,*.clj,*.cljs.hl setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:
-" -- Rainbow parenthesis options
-let g:rbpt_colorpairs = [
-	\ ['darkyellow',  'RoyalBlue3'],
-	\ ['darkgreen',   'SeaGreen3'],
-	\ ['darkcyan',    'DarkOrchid3'],
-	\ ['Darkblue',    'firebrick3'],
-	\ ['DarkMagenta', 'RoyalBlue3'],
-	\ ['darkred',     'SeaGreen3'],
-	\ ['darkyellow',  'DarkOrchid3'],
-	\ ['darkgreen',   'firebrick3'],
-	\ ['darkcyan',    'RoyalBlue3'],
-	\ ['Darkblue',    'SeaGreen3'],
-	\ ['DarkMagenta', 'DarkOrchid3'],
-	\ ['Darkblue',    'firebrick3'],
-	\ ['darkcyan',    'SeaGreen3'],
-	\ ['darkgreen',   'RoyalBlue3'],
-	\ ['darkyellow',  'DarkOrchid3'],
-	\ ['darkred',     'firebrick3'],
-	\ ]
-
-
 
 " #####################
 " ### Personal conf ###
@@ -268,7 +183,7 @@ imap éé `
 
 " --- type ° to search the word in all files in the current dir
 nmap ° :Ag <c-r>=expand("<cword>")<cr><cr>
-nnoremap <space>/ :Ag 
+nnoremap <space>/ :Ag
 
 " -- js beautifer
 autocmd FileType javascript noremap <buffer> <c-f> :call JsBeautify()<cr>
