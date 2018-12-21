@@ -181,8 +181,8 @@ imap éé `
 "     highlight ColorColumn ctermbg=1
 " endif
 
-" --- type ° to search the word in all files in the current dir
-nmap ° :Ag <c-r>=expand("<cword>")<cr><cr>
+" --- type # to search the word in all files in the current dir
+nmap # :Ag <c-r>=expand("<cword>")<cr><cr>
 nnoremap <space>/ :Ag
 
 " -- js beautifer
