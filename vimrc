@@ -73,11 +73,11 @@ nmap gN <Plug>GitGutterPrevHunk
 " -----------------
 
 " -- solarized theme
-set background=dark
-try
-    colorscheme evening
-catch
-endtry
+"set background=dark
+"try
+"    colorscheme solarized
+"catch
+"endtry
 
 " ----------------------------
 "       File Management
@@ -111,7 +111,7 @@ set viminfo='20,\"50    " read/write a .viminfo file, don't store more
 set history=10000	    " keep 100000 lines of command line history
 set ruler		        " show the cursor position all the time
 
-syntax on " syntax highlighting
+syntax enable " syntax highlighting
 set hlsearch " highlight searches
 
 
@@ -194,3 +194,7 @@ autocmd FileType css noremap <buffer> <c-f> :call JsBeautify()<cr>
 
 " -- vim-pandoc folding
 let g:pandoc#modules#disabled = ["folding"]
+
+set nu
+set ai
+set cursorline
