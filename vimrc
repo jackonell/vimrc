@@ -198,3 +198,10 @@ set ai
 set cursorline
 set nu
 
+nnoremap ; :
+inoremap ' ''<ESC>i
+inoremap " ""<ESC>i
+inoremap ( ()<ESC>i
+inoremap [ []<ESC>i
+inoremap < <><ESC>i
+inoremap { {<CR>}<ESC>0
