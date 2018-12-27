@@ -25,7 +25,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 " Align code
 Plug 'junegunn/vim-easy-align'
-Plug 'scrooloose/syntastic'             " syntax checker
+" Plug 'scrooloose/syntastic'             " syntax checker
 Plug 'pbrisbin/html-template-syntax'    " Yesod templates
 " --- XML
 Plug 'othree/xml.vim'
@@ -204,5 +204,32 @@ nnoremap ; :
 "inoremap ( ()<ESC>i
 "inoremap [ []<ESC>i
 "inoremap < <><ESC>i
+"inoremap { {}<ESC>i
 "inoremap { {<CR>}<ESC>0
-set paste
+
+map <c-j> :call CompileRunGcc()<CR>
+func! CompileRunGcc()
+    exec "w"
+    if &filetype == 'c'
+        exec "!g++ % -o %<"
+        exec "!time ./%<"
+    elseif &filetype == 'cpp'
+        exec "!g++ % -o %<"
+        exec "!time ./%<"
+    elseif &filetype == 'java'
+        exec "!javac %"
+        exec "!time java %<"
+    elseif &filetype == 'sh'
+        :!time bash %
+    elseif &filetype == 'python'
+        exec "!time python3.6 %"
+    elseif &filetype == 'html'
+        exec "!firefox % &"
+    elseif &filetype == 'go'
+        exec "!go build %<"
+        exec "!time go run %"
+    elseif &filetype == 'mkd'
+        exec "!~/.vim/markdown.pl % > %.html &"
+        exec "!firefox %.html &"
+    endif
+endfunc
