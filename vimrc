@@ -53,7 +53,6 @@ Plug 'wakatime/vim-wakatime'
 call plug#end()
 
 set nocompatible
-
 " ###################
 " ### Plugin conf ###
 " ###################
@@ -85,7 +84,7 @@ nmap gN <Plug>GitGutterPrevHunk
 let g:unite_source_history_yank_enable = 1
 try
   let g:unite_source_rec_async_command='ag --nocolor --nogroup -g ""'
-  call unite#filters#matcher_default#use(['matcher_fuzzy'])
+  call unite#filters#matcher_default " #use(['matcher_fuzzy'])
 catch
 endtry
 " search a file in the filetree
@@ -195,6 +194,15 @@ autocmd FileType css noremap <buffer> <c-f> :call JsBeautify()<cr>
 " -- vim-pandoc folding
 let g:pandoc#modules#disabled = ["folding"]
 
-set nu
 set ai
 set cursorline
+set nu
+
+nnoremap ; :
+"inoremap ' ''<ESC>i
+"inoremap " ""<ESC>i
+"inoremap ( ()<ESC>i
+"inoremap [ []<ESC>i
+"inoremap < <><ESC>i
+"inoremap { {<CR>}<ESC>0
+set paste
