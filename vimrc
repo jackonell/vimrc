@@ -1,54 +1,41 @@
+"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+"                                                                              "
+"                       __   _ _ _ __ ___  _ __ ___                            "
+"                       \ \ / / | '_ ` _ \| '__/ __|                           "
+"                        \ V /| | | | | | | | | (__                            "
+"                         \_/ |_|_| |_| |_|_|  \___|                           "
+"                                                                              "
+"                                                                              "
+"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+
+"==============================================================================
+"Plugins
+"==============================================================================
 call plug#begin('~/.vim/plugged')
 
-" Distraction Free Writting
-Plug 'junegunn/goyo.vim'
+"------------------------代码导航----------------------------------------------
+Plug 'scrooloose/nerdtree'             "项目文件列表
+Plug 'rking/ag.vim'                    "全局搜索
+Plug 'majutsushi/tagbar'               "tag列表
 
-" completion during typing
-Plug 'neocomplcache'
-" solarized colorscheme
-Plug 'altercation/vim-colors-solarized'
-" Right way to handle trailing-whitespace
-Plug 'bronson/vim-trailing-whitespace'
-" NERDTree
-" Plug 'scrooloose/nerdtree'
-" Unite
-"   depend on vimproc
-"   you have to go to .vim/plugin/vimproc.vim and do a ./make
-Plug 'Shougo/vimproc.vim'
-Plug 'Shougo/unite.vim'
-" writing pandoc documents
-Plug 'vim-pandoc/vim-pandoc'
-Plug 'vim-pandoc/vim-pandoc-syntax'
-" GIT
-Plug 'tpope/vim-fugitive'
-" show which line changed using git
-Plug 'airblade/vim-gitgutter'
-" Align code
-Plug 'junegunn/vim-easy-align'
-" Plug 'scrooloose/syntastic'             " syntax checker
-Plug 'pbrisbin/html-template-syntax'    " Yesod templates
-" --- XML
-Plug 'othree/xml.vim'
- " Plug 'paredit.vim'
-Plug 'tpope/vim-fireplace'
-" " <<< vim-fireplace dependencie
-" Plug 'tpope/vim-classpath'
+"------------------------外观--------------------------------------------------
+Plug 'bling/vim-airline'               "美化导航栏字体，需要额外安装字体
 
-" Plug 'jpalardy/vim-slime'
-" -- ag
-Plug 'rking/ag.vim'
-" --- elm-lang
-Plug 'lambdatoast/elm.vim'
-" --- Idris
-Plug 'idris-hackers/idris-vim'
+"------------------------代码编写工具------------------------------------------
+Plug 'SirVer/ultisnips'                "代码块自动补全
+Plug 'honza/vim-snippets'              "代码块集合
+Plug 'tpope/vim-surround'              "括号，引号，XML标签等
+Plug 'tpope/vim-fugitive'              "Git
+Plug 'tpope/vim-gitgutter'             "使用GIT展示哪一行被修改过
+Plug 'bronson/vim-trailing-whitespace' "处理空白
+Plug 'junegunn/vim-easy-align'         "简单对齐
 
-" -- reload browser on change
-" Plug 'Bogdanp/browser-connect.vim'
+"-----------------------代码查找工具-------------------------------------------
 
-Plug 'maksimr/vim-jsbeautify'
-Plug 'einars/js-beautify'
-
-Plug 'wakatime/vim-wakatime'
+"-----------------------代码运行调试工具---------------------------------------
+"-----------------------语言---------------------------------------------------
+"-----------------------其他---------------------------------------------------
+Plug 'wakatime/vim-wakatime'           "记录编程时间
 
 call plug#end()
 
