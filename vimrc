@@ -77,8 +77,8 @@ autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx,*.py call tagbar#autoopen()
 "------------------
 let g:airline_theme='bubblegum'
 let g:airline#extensions#tabline#enabled=1
-nmap ]] :bn<CR>
-nmap [[ :bp<CR>
+nmap <space>] :bn<CR>
+nmap <space>[ :bp<CR>
 
 "------------------
 " UltiSnips settings
