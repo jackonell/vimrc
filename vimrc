@@ -20,17 +20,24 @@ Plug 'majutsushi/tagbar'               "tag列表
 
 "------------------------外观--------------------------------------------------
 Plug 'bling/vim-airline'               "美化导航栏字体，需要额外安装字体
+Plug 'vim-airline/vim-airline-themes'
 
 "------------------------代码编写工具------------------------------------------
 Plug 'SirVer/ultisnips'                "代码块自动补全
 Plug 'honza/vim-snippets'              "代码块集合
 Plug 'tpope/vim-surround'              "括号，引号，XML标签等
 Plug 'tpope/vim-fugitive'              "Git
-Plug 'tpope/vim-gitgutter'             "使用GIT展示哪一行被修改过
+Plug 'airblade/vim-gitgutter'          "使用GIT展示哪一行被修改过
 Plug 'bronson/vim-trailing-whitespace' "处理空白
 Plug 'junegunn/vim-easy-align'         "简单对齐
+Plug 'scrooloose/nerdcommenter'        "注释
+Plug 'Valloric/YouCompleteMe'          "代码补全
+Plug 'Lokaltog/vim-easymotion'         "快速移动
+Plug 'jiangmiao/auto-pairs'            "括号、引号等自动补全
 
 "-----------------------代码查找工具-------------------------------------------
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "安装fzf
+Plug 'junegunn/fzf.vim' "fzf配置
 
 "-----------------------代码运行调试工具---------------------------------------
 "-----------------------语言---------------------------------------------------
@@ -39,7 +46,6 @@ Plug 'wakatime/vim-wakatime'           "记录编程时间
 
 call plug#end()
 
-set nocompatible
 " ###################
 " ### Plugin conf ###
 " ###################
@@ -47,42 +53,68 @@ set nocompatible
 " ----------------
 "       GIT
 " ----------------
-
-" -- vim-gitgutter
 highlight clear SignColumn
 highlight SignColumn ctermbg=0
 nmap gn <Plug>GitGutterNextHunk
 nmap gN <Plug>GitGutterPrevHunk
 
-" -----------------
-"       THEME
-" -----------------
+"-------------------
+" NERDTree settings
+" ------------------
+autocmd vimenter * if !argc() | NERDTree | endif
+let NERDTreeIgnore=['\.pyc','\~$','\.swp']
+nmap <space>n :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" -- solarized theme
-"set background=dark
-"try
-"    colorscheme solarized
-"catch
-"endtry
+"------------------
+" tagbar settings
+"------------------
+nmap <space>v :TagbarToggle<CR>
+autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx,*.py call tagbar#autoopen()
 
-" ----------------------------
-"       File Management
-" ----------------------------
-let g:unite_source_history_yank_enable = 1
-try
-  let g:unite_source_rec_async_command='ag --nocolor --nogroup -g ""'
-  call unite#filters#matcher_default " #use(['matcher_fuzzy'])
-catch
-endtry
-" search a file in the filetree
-nnoremap <space><space> :vsplit<cr> :<C-u>Unite -start-insert file_rec/async<cr>
-nnoremap <space>f :vsplit<cr> :<C-u>Unite file<cr>
-nnoremap <space>g :vsplit<cr> :<C-u>Unite -start-insert file_rec/git<cr>
-nnoremap <space>b :vsplit<cr> :<C-u>Unite buffer<cr>
-" see the yank history
-nnoremap <space>y :vsplit<cr>:<C-u>Unite history/yank<cr>
-" reset not it is <C-l> normally
-:nnoremap <space>r <Plug>(unite_restart)
+"------------------
+" AirLine settings
+"------------------
+let g:airline_theme='bubblegum'
+let g:airline#extensions#tabline#enabled=1
+nmap ]] :bn<CR>
+nmap [[ :bp<CR>
+
+"------------------
+" UltiSnips settings
+"------------------
+"let g:UltiSnipsExpandTrigger="<c-g>"
+let g:UltiSnipsJumpForwardTrigger="<c-f>"
+let g:UltiSnipsJumpBackwardTrigger="<c-b>"
+
+"------------------
+" fzf settings
+"------------------
+nnoremap <space><space> :Files<CR>
+nnoremap <space>b :Buffers<CR>
+
+nmap # :Ag <c-r>=expand("<cword>")<cr><cr>
+nnoremap <space>/ :Ag
+
+vnoremap <silent> <Enter> :EasyAlign<cr>
+
+"------------------
+" YCM settings
+"------------------
+let g:ycm_collect_identifiers_from_tags_files = 1           " 开启 YCM 基于标签引擎
+let g:ycm_collect_identifiers_from_comments_and_strings = 1 " 注释与字符串中的内容也用于补全
+let g:syntastic_ignore_files=[".*\.py$"]
+let g:ycm_seed_identifiers_with_syntax = 1                  " 语法关键字补全
+let g:ycm_complete_in_comments = 1
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_key_list_select_completion = ['<c-n>', '<Down>']  " 映射按键, 没有这个会拦截掉tab, 导致其他插件的tab不能用.
+let g:ycm_key_list_previous_completion = ['<c-p>', '<Up>']
+let g:ycm_complete_in_comments = 1                          " 在注释输入中也能补全
+let g:ycm_complete_in_strings = 1                           " 在字符串输入中也能补全
+let g:ycm_collect_identifiers_from_comments_and_strings = 1 " 注释和字符串中的文字也会被收入补全
+let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
+let g:ycm_show_diagnostics_ui = 0                           " 禁用语法检查
+"nmap <space>d :YcmCompleter GoToDefinition<CR>  不知道为什么不起作用
 
 " #####################
 " ### Personal conf ###
@@ -94,15 +126,14 @@ set nocompatible
 set bs=2		        " allow backspacing over everything in insert mode
 set viminfo='20,\"50    " read/write a .viminfo file, don't store more
 			            " than 50 lines of registers
-set history=10000	    " keep 100000 lines of command line history
+set history=1000	    " keep 100000 lines of command line history
 set ruler		        " show the cursor position all the time
 
 syntax enable " syntax highlighting
 set hlsearch " highlight searches
-
-
 set visualbell " no beep
 
+nnoremap ; :
 " move between splits
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
@@ -121,6 +152,8 @@ set autoindent
 set smartindent
 set cindent
 set cinoptions=(0,u0,U0
+set cursorline
+set nu
 
 " Spellchecking
 if has("spell") " if vim support spell checking
@@ -143,58 +176,7 @@ if has("spell") " if vim support spell checking
     highlight SpellLocal term=underline cterm=underline
 endif
 
-" Easy align interactive
-vnoremap <silent> <Enter> :EasyAlign<cr>
-
-" .ymd file type
-autocmd BufEnter *.ymd set filetype=markdown
-autocmd BufEnter *.cljs,*.cljs.hl set filetype=clojure
-" -- Reload browser on cljs save
-"  don't forget to put <script src="http://localhost:9001/ws"></script>
-"  in your HTML
-" au BufWritePost *.cljs :BCReloadPage
-
-" ========
-" Personal
-" ========
-
-" Easier anti-quote
-imap éé `
-
-" -- show the column 81
-" if (exists('+colorcolumn'))
-"     set colorcolumn=80
-"     highlight ColorColumn ctermbg=1
-" endif
-
-" --- type # to search the word in all files in the current dir
-nmap # :Ag <c-r>=expand("<cword>")<cr><cr>
-nnoremap <space>/ :Ag
-
-" -- js beautifer
-autocmd FileType javascript noremap <buffer> <c-f> :call JsBeautify()<cr>
-autocmd FileType html noremap <buffer> <c-f> :call JsBeautify()<cr>
-autocmd FileType css noremap <buffer> <c-f> :call JsBeautify()<cr>
-
-" set noswapfile
-
-" -- vim-pandoc folding
-let g:pandoc#modules#disabled = ["folding"]
-
-set ai
-set cursorline
-set nu
-
-nnoremap ; :
-"inoremap ' ''<ESC>i
-"inoremap " ""<ESC>i
-"inoremap ( ()<ESC>i
-"inoremap [ []<ESC>i
-"inoremap < <><ESC>i
-"inoremap { {}<ESC>i
-"inoremap { {<CR>}<ESC>0
-
-map <c-j> :call CompileRunGcc()<CR>
+map <F5> :call CompileRunGcc()<CR>
 func! CompileRunGcc()
     exec "w"
     if &filetype == 'c'
