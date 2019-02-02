@@ -42,7 +42,7 @@ Plug 'junegunn/fzf.vim' "fzf配置
 "-----------------------代码运行调试工具---------------------------------------
 "-----------------------语言---------------------------------------------------
 "-----------------------其他---------------------------------------------------
-Plug 'wakatime/vim-wakatime'           "记录编程时间
+"Plug 'wakatime/vim-wakatime'           "记录编程时间
 
 call plug#end()
 
@@ -61,7 +61,7 @@ nmap gN <Plug>GitGutterPrevHunk
 "-------------------
 " NERDTree settings
 " ------------------
-autocmd vimenter * if !argc() | NERDTree | endif
+"autocmd vimenter * if !argc() | NERDTree | endif
 let NERDTreeIgnore=['\.pyc','\~$','\.swp']
 nmap <space>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -70,7 +70,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " tagbar settings
 "------------------
 nmap <space>v :TagbarToggle<CR>
-autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx,*.py call tagbar#autoopen()
+"autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx,*.py call tagbar#autoopen()
 
 "------------------
 " AirLine settings
@@ -132,6 +132,8 @@ set ruler		        " show the cursor position all the time
 syntax enable " syntax highlighting
 set hlsearch " highlight searches
 set visualbell " no beep
+set t_Co=256 
+set term=xterm-256color
 
 nnoremap ; :
 " move between splits
