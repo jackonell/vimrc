@@ -28,7 +28,7 @@ cp third_party/ycmd/examples/.ycm_extra_conf.py ~/.vim/
 ```
 在vimrc中添加：
 ```
-let g:ycm_server_python_interpreter='/usr/bin/python'  #注意这里的解释器和运行install.sh时找到的python编译器要一致
+let g:ycm_server_python_interpreter='/usr/bin/python'  #注意这里的解释器和运行install.sh时找到的python解释器要一致
 let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
 ```
 
