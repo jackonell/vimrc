@@ -42,9 +42,12 @@ Plug 'junegunn/fzf.vim' "fzf配置
 "-----------------------代码运行调试工具---------------------------------------
 "-----------------------语言---------------------------------------------------
 "-----------------------其他---------------------------------------------------
-Plug 'wakatime/vim-wakatime'           "记录编程时间
 
 call plug#end()
+
+filetype on
+filetype plugin on
+filetype plugin indent on
 
 " ###################
 " ### Plugin conf ###
@@ -55,13 +58,27 @@ call plug#end()
 " ----------------
 highlight clear SignColumn
 highlight SignColumn ctermbg=0
-nmap gn <Plug>GitGutterNextHunk
-nmap gN <Plug>GitGutterPrevHunk
+nmap gn <Plug>(GitGutterNextHunk)
+nmap gN <Plug>(GitGutterPrevHunk)
+
+" ----------------
+"    easymotion
+" ----------------
+let g:EasyMotion_smartcase = 1
+"let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
+nmap ss <Plug>(easymotion-s2)
+nmap sh <Plug>(easymotion-linebackward)
+nmap sj <Plug>(easymotion-j)
+nmap sk <Plug>(easymotion-k)
+nmap sl <Plug>(easymotion-lineforward)
+nmap sw <Plug>(easymotion-w)
+nmap se <Plug>(easymotion-e)
+nmap s. <Plug>(easymotion-repeat)
 
 "-------------------
 " NERDTree settings
 " ------------------
-autocmd vimenter * if !argc() | NERDTree | endif
+"autocmd vimenter * if !argc() | NERDTree | endif
 let NERDTreeIgnore=['\.pyc','\~$','\.swp']
 nmap <space>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -70,7 +87,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " tagbar settings
 "------------------
 nmap <space>v :TagbarToggle<CR>
-autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx,*.py call tagbar#autoopen()
+"autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx,*.py call tagbar#autoopen()
 
 "------------------
 " AirLine settings
@@ -79,6 +96,7 @@ let g:airline_theme='bubblegum'
 let g:airline#extensions#tabline#enabled=1
 nmap <space>] :bn<CR>
 nmap <space>[ :bp<CR>
+set t_Co=256[]
 
 "------------------
 " UltiSnips settings
@@ -88,7 +106,7 @@ let g:UltiSnipsJumpForwardTrigger="<c-f>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 
 "------------------
-" fzf settings
+"" fzf settings
 "------------------
 nnoremap <space><space> :Files<CR>
 nnoremap <space>b :Buffers<CR>
@@ -102,19 +120,31 @@ vnoremap <silent> <Enter> :EasyAlign<cr>
 " YCM settings
 "------------------
 let g:ycm_collect_identifiers_from_tags_files = 1           " 开启 YCM 基于标签引擎
-let g:ycm_collect_identifiers_from_comments_and_strings = 1 " 注释与字符串中的内容也用于补全
-let g:syntastic_ignore_files=[".*\.py$"]
-let g:ycm_seed_identifiers_with_syntax = 1                  " 语法关键字补全
-let g:ycm_complete_in_comments = 1
-let g:ycm_confirm_extra_conf = 0
 let g:ycm_key_list_select_completion = ['<c-n>', '<Down>']  " 映射按键, 没有这个会拦截掉tab, 导致其他插件的tab不能用.
 let g:ycm_key_list_previous_completion = ['<c-p>', '<Up>']
-let g:ycm_complete_in_comments = 1                          " 在注释输入中也能补全
-let g:ycm_complete_in_strings = 1                           " 在字符串输入中也能补全
-let g:ycm_collect_identifiers_from_comments_and_strings = 1 " 注释和字符串中的文字也会被收入补全
+let g:ycm_server_python_interpreter='/home/brooks/anaconda3/bin/python3.6'
 let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
 let g:ycm_show_diagnostics_ui = 0                           " 禁用语法检查
-"nmap <space>d :YcmCompleter GoToDefinition<CR>  不知道为什么不起作用
+let g:ycm_complete_in_comments=1
+let g:ycm_confirm_extra_conf=0
+let g:ycm_collect_identifiers_from_tags_files=1
+set completeopt-=preview
+let g:ycm_min_num_of_chars_for_completion=1
+let g:ycm_cache_omnifunc=0
+let g:ycm_seed_identifiers_with_syntax=1"
+let g:ycm_semantic_triggers =  {
+  \   'c' : ['->', '.'],
+  \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+  \             're!\[.*\]\s'],
+  \   'ocaml' : ['.', '#'],
+  \   'cpp,objcpp' : ['->', '.', '::','re!\w{2}'],
+  \   'perl' : ['->'],
+  \   'php' : ['->', '::'],
+  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
+  \   'ruby' : ['.', '::'],
+  \   'lua' : ['.', ':'],
+  \   'erlang' : [':'],
+  \ }
 
 " #####################
 " ### Personal conf ###
@@ -182,14 +212,17 @@ func! CompileRunGcc()
     if &filetype == 'c'
         exec "!g++ % -o %<"
         exec "!time ./%<"
+    elseif &filetype == 'cuda'
+        exec "!nvcc % -o %<"
+        exec "!time ./%<"
     elseif &filetype == 'cpp'
-        exec "!g++ % -o %<"
+        exec "!g++ % -std=c++11 -o %<"
         exec "!time ./%<"
     elseif &filetype == 'java'
         exec "!javac %"
         exec "!time java %<"
     elseif &filetype == 'sh'
-        :!time bash %
+        exec ":!time bash %"
     elseif &filetype == 'python'
         exec "!time python3.6 %"
     elseif &filetype == 'html'
