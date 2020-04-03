@@ -42,7 +42,6 @@ Plug 'junegunn/fzf.vim' "fzf配置
 "-----------------------代码运行调试工具---------------------------------------
 "-----------------------语言---------------------------------------------------
 "-----------------------其他---------------------------------------------------
-"Plug 'wakatime/vim-wakatime'           "记录编程时间
 
 call plug#end()
 
@@ -55,13 +54,18 @@ call plug#end()
 " ----------------
 highlight clear SignColumn
 highlight SignColumn ctermbg=0
-nmap gn <Plug>GitGutterNextHunk
-nmap gN <Plug>GitGutterPrevHunk
+nmap gn <Plug>(GitGutterNextHunk)
+nmap gN <Plug>(GitGutterPrevHunk)
+
+" ----------------
+"       easymotion
+" ----------------
+nmap ss <Plug>(easymotion-s2)
 
 "-------------------
 " NERDTree settings
 " ------------------
-"autocmd vimenter * if !argc() | NERDTree | endif
+autocmd vimenter * if !argc() | NERDTree | endif
 let NERDTreeIgnore=['\.pyc','\~$','\.swp']
 nmap <space>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -93,8 +97,8 @@ let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 nnoremap <space><space> :Files<CR>
 nnoremap <space>b :Buffers<CR>
 
-nmap # :Ag <c-r>=expand("<cword>")<cr><cr>
-nnoremap <space>/ :Ag
+nmap # :Ag --ignore=tags <c-r>=expand("<cword>")<cr><cr>
+nnoremap <space>/ :Ag --ignore=tags
 
 vnoremap <silent> <Enter> :EasyAlign<cr>
 
@@ -132,7 +136,7 @@ set ruler		        " show the cursor position all the time
 syntax enable " syntax highlighting
 set hlsearch " highlight searches
 set visualbell " no beep
-set t_Co=256 
+set t_Co=256
 set term=xterm-256color
 
 nnoremap ; :
@@ -187,20 +191,29 @@ func! CompileRunGcc()
     elseif &filetype == 'cpp'
         exec "!g++ % -o %<"
         exec "!time ./%<"
+    elseif &filetype == 'cuda'
+        exec "!nvcc % -o %<"
+        exec "!time ./%<"
     elseif &filetype == 'java'
         exec "!javac %"
         exec "!time java %<"
     elseif &filetype == 'sh'
         :!time bash %
     elseif &filetype == 'python'
-        exec "!time python3.6 %"
+        exec "!time python %"
     elseif &filetype == 'html'
         exec "!firefox % &"
+    elseif &filetype == 'markdown'
+        exec "!typora % &"
     elseif &filetype == 'go'
         exec "!go build %<"
         exec "!time go run %"
-    elseif &filetype == 'mkd'
-        exec "!~/.vim/markdown.pl % > %.html &"
-        exec "!firefox %.html &"
     endif
 endfunc
+
+map <F6> :call OpenFolder()<CR>
+func! OpenFolder()
+    exec "w"
+    exec "!nautilus % &"
+endfunc
+
