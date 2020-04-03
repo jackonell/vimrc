@@ -111,8 +111,8 @@ let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 nnoremap <space><space> :Files<CR>
 nnoremap <space>b :Buffers<CR>
 
-nmap # :Ag <c-r>=expand("<cword>")<cr><cr>
-nnoremap <space>/ :Ag
+nmap # :Ag --ignore=tags <c-r>=expand("<cword>")<cr><cr>
+nnoremap <space>/ :Ag --ignore=tags
 
 vnoremap <silent> <Enter> :EasyAlign<cr>
 
@@ -162,6 +162,8 @@ set ruler		        " show the cursor position all the time
 syntax enable " syntax highlighting
 set hlsearch " highlight searches
 set visualbell " no beep
+set t_Co=256
+set term=xterm-256color
 
 nnoremap ; :
 " move between splits
@@ -218,20 +220,29 @@ func! CompileRunGcc()
     elseif &filetype == 'cpp'
         exec "!g++ % -std=c++11 -o %<"
         exec "!time ./%<"
+    elseif &filetype == 'cuda'
+        exec "!nvcc % -o %<"
+        exec "!time ./%<"
     elseif &filetype == 'java'
         exec "!javac %"
         exec "!time java %<"
     elseif &filetype == 'sh'
         exec ":!time bash %"
     elseif &filetype == 'python'
-        exec "!time python3.6 %"
+        exec "!time python %"
     elseif &filetype == 'html'
         exec "!firefox % &"
+    elseif &filetype == 'markdown'
+        exec "!typora % &"
     elseif &filetype == 'go'
         exec "!go build %<"
         exec "!time go run %"
-    elseif &filetype == 'mkd'
-        exec "!~/.vim/markdown.pl % > %.html &"
-        exec "!firefox %.html &"
     endif
 endfunc
+
+map <F6> :call OpenFolder()<CR>
+func! OpenFolder()
+    exec "w"
+    exec "!nautilus % &"
+endfunc
+
