@@ -23,6 +23,7 @@ cd ~/.vim/plugged
 rm -rf YouCompleteMe
 git clone --recursive https://github.com/Valloric/YouCompleteMe.git
 cd YouCompleteMe
+git submodule update --init --recursive
 ./install.sh --clang-completer
 cp third_party/ycmd/examples/.ycm_extra_conf.py ~/.vim/
 ```

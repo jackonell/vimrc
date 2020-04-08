@@ -122,7 +122,7 @@ vnoremap <silent> <Enter> :EasyAlign<cr>
 let g:ycm_collect_identifiers_from_tags_files = 1           " 开启 YCM 基于标签引擎
 let g:ycm_key_list_select_completion = ['<c-n>', '<Down>']  " 映射按键, 没有这个会拦截掉tab, 导致其他插件的tab不能用.
 let g:ycm_key_list_previous_completion = ['<c-p>', '<Up>']
-let g:ycm_server_python_interpreter='/home/brooks/anaconda3/bin/python3.6'
+let g:ycm_server_python_interpreter='/home/xxx/anaconda3/bin/python3.7'
 let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
 let g:ycm_show_diagnostics_ui = 0                           " 禁用语法检查
 let g:ycm_complete_in_comments=1
